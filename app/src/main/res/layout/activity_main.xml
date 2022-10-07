@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:id="@+id/img1"
+        android:background="@drawable/bg3"
+        android:layout_centerHorizontal="true"
+
+
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lost and Found"
+            android:textSize="25dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:paddingTop="15dp"
+            android:paddingLeft="110dp">
+
+        </TextView>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        android:background="@drawable/bg2"
+        android:layout_below="@id/img1"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="10dp"
+        android:id="@+id/l1"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:textStyle="bold"
+                android:id="@+id/ltxt"
+                android:textSize="30dp"
+                android:clickable="true"
+                android:textColor="@color/white"
+                android:layout_marginRight="60dp"
+                android:layout_marginLeft="20dp"
+                ></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:id="@+id/rtxt"
+
+                android:textSize="22dp"
+                android:textStyle="bold"
+                android:clickable="true"
+
+                android:layout_marginRight="60dp"
+
+                ></TextView>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/bg4"></LinearLayout>
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:enabled="true"
+
+            android:id="@+id/ul"
+
+            android:hint="Username"
+            android:background="@drawable/bg1"
+            android:padding="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp">
+
+        </EditText>
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:id="@+id/pl"
+            android:hint="Password"
+
+            android:background="@drawable/bg1"
+            android:padding="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp">
+
+
+        </EditText>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btnbg"
+            android:text="Login"
+
+            android:id="@+id/lbtn"
+            android:textAllCaps="false"
+            android:layout_marginLeft="90dp"
+            android:textColor="@color/white"></Button>
+
+
+        //register
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg1"
+            android:hint="Username"
+            android:layout_marginLeft="20dp"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:id="@+id/ur"
+            android:inputType="text">
+
+        </EditText>
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg1"
+            android:hint="Password"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/rp"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:inputType="textPassword">
+
+        </EditText>
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg1"
+            android:hint="Email"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/re"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:inputType="text">
+
+        </EditText>
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg1"
+            android:id="@+id/rnum"
+            android:visibility="gone"
+            android:hint="Phone"
+            android:layout_marginLeft="20dp"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:inputType="number">
+
+        </EditText>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btnbg"
+            android:text="Register"
+            android:id="@+id/rbtn"
+            android:visibility="gone"
+
+            android:textAllCaps="false"
+            android:layout_marginLeft="90dp"
+            android:textColor="@color/white"></Button>
+
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Made with love in IIT Patna"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/l1"
+        android:layout_marginTop="100dp"></TextView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>
