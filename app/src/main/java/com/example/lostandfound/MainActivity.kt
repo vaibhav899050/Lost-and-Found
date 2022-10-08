@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                         count = 0
                         for(document in it.result){
                             
-                            if(ur.text.toString()==document.data.getValue("uesrname")){
+                            if(rnum.text.toString()==document.data.getValue("phone")){
                                 count+=1
                             }
                             
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 if(count!=0){
-                    Toast.makeText(applicationContext, "Username taken", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Phone number is already registered", Toast.LENGTH_LONG).show()
                 }
                 if(count==0){
                     userdb.add(users)
@@ -104,14 +104,15 @@ class MainActivity : AppCompatActivity() {
 //                Toast.makeText(applicationContext, "Please fill the details", Toast.LENGTH_SHORT).show()
 //            }
             if(text1.text.toString().trim().isNotEmpty() && text2.text.toString().trim().isNotEmpty()) {
-                userdb.whereEqualTo("uesrname", text1.text.toString())
+                userdb.whereEqualTo("phone", text1.text.toString())
                     .get()
                     .addOnCompleteListener {
 
                         if(it.isSuccessful){
                             for (document in it.result){
                                 if(text2.text.toString()==document.data.getValue("password")){
-                                    intent.putExtra("username", text1.text.toString())
+                                    val usern = document.data.getValue("uesrname")
+                                    intent.putExtra("username", usern.toString())
                                     startActivity(intent)
                                 }
                                 else{
