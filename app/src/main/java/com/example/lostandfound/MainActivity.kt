@@ -72,7 +72,23 @@ class MainActivity : AppCompatActivity() {
             if(ur.text.toString().trim().isNotEmpty() && pr.text.toString().trim().isNotEmpty() && re.text.toString().trim().isNotEmpty() && rnum.text.toString().trim().isNotEmpty()){
                 val users = hashMapOf("uesrname" to ur.text.toString(), "password" to pr.text.toString(), "email" to re.text.toString(), "phone" to rnum.text.toString())
 
-                userdb.add(users)
+                userdb.get().addOnCompleteListener {
+                    if(it.isSuccessful){
+                        for(document in it.result){
+                            var count = 0
+                            if(ur.text.toString()==document.data.getValue("uesrname")){
+                                count+=1
+                            }
+                            if(count!=0){
+                                Toast.makeText(applicationContext, "Username taken", Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+                                userdb.add(users)
+                                Toast.makeText(applicationContext, "You are now registered", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
 
             }
             else{
@@ -86,15 +102,21 @@ class MainActivity : AppCompatActivity() {
 //            }
             if(text1.text.toString().trim().isNotEmpty() && text2.text.toString().trim().isNotEmpty()) {
                 userdb.whereEqualTo("uesrname", text1.text.toString())
-                    .whereEqualTo("password", text2.text.toString()).get()
-                    .addOnSuccessListener { document ->
-                        if (document != null) {
-                            startActivity(intent)
+                    .get()
+                    .addOnCompleteListener {
 
-                        } else {
-                            Toast.makeText(applicationContext, "Not found", Toast.LENGTH_SHORT)
-                                .show()
+                        if(it.isSuccessful){
+                            for (document in it.result){
+                                if(text2.text.toString()==document.data.getValue("password")){
+                                    startActivity(intent)
+                                }
+                                else{
+
+                                    Toast.makeText(applicationContext, "not found", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
+
                     }
 
             }
