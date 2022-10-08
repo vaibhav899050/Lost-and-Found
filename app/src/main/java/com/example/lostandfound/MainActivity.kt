@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         val txt1 = ur.text.toString()
         val userdb = db.collection("users")
         val intent = Intent(this, home::class.java)
+        var count  = 0
 
         rbtn.setOnClickListener {
             //if(txt1.trim().isEmpty() || pr.text.toString().trim().isEmpty() || re.text.toString().trim().isEmpty() || rnum.text.toString().trim().isEmpty()){
@@ -74,20 +75,22 @@ class MainActivity : AppCompatActivity() {
 
                 userdb.get().addOnCompleteListener {
                     if(it.isSuccessful){
+                        count = 0
                         for(document in it.result){
-                            var count = 0
+                            
                             if(ur.text.toString()==document.data.getValue("uesrname")){
                                 count+=1
                             }
-                            if(count!=0){
-                                Toast.makeText(applicationContext, "Username taken", Toast.LENGTH_SHORT).show()
-                            }
-                            else{
-                                userdb.add(users)
-                                Toast.makeText(applicationContext, "You are now registered", Toast.LENGTH_SHORT).show()
-                            }
+                            
                         }
                     }
+                }
+                if(count!=0){
+                    Toast.makeText(applicationContext, "Username taken", Toast.LENGTH_SHORT).show()
+                }
+                if(count==0){
+                    userdb.add(users)
+                    Toast.makeText(applicationContext, "You are now registered", Toast.LENGTH_SHORT).show()
                 }
 
             }
@@ -108,6 +111,7 @@ class MainActivity : AppCompatActivity() {
                         if(it.isSuccessful){
                             for (document in it.result){
                                 if(text2.text.toString()==document.data.getValue("password")){
+                                    intent.putExtra("username", text1.text.toString())
                                     startActivity(intent)
                                 }
                                 else{

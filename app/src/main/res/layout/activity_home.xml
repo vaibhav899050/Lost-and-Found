@@ -7,6 +7,31 @@
     tools:context=".home">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/bg3"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:paddingTop="15dp"
+
+            android:id="@+id/utxt">
+
+
+        </TextView>
+
+    </LinearLayout>
+
+
 
 
 </RelativeLayout>
