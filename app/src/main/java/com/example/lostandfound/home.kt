@@ -43,13 +43,15 @@ class home : AppCompatActivity() {
         val handler = Handler()
         val handler1 = Handler()
         var params: ViewGroup.LayoutParams = linear.layoutParams
-        val recyclerView = findViewById<RecyclerView>(R.id.recview)
+        RecyclerView = findViewById(R.id.recview)
+        RecyclerView.layoutManager = LinearLayoutManager(this)
+        RecyclerView.setHasFixedSize(true)
 
-        recyclerView.setHasFixedSize(true)
+
 
         itemarraylist = arrayListOf()
         myadapter = adapter(itemarraylist)
-        recyclerView.adapter = myadapter
+        RecyclerView.adapter = myadapter
         EventChangeListener()
 
 
