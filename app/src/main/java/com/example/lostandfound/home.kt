@@ -1,5 +1,6 @@
 package com.example.lostandfound
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -53,6 +54,10 @@ class home : AppCompatActivity() {
         myadapter = adapter(itemarraylist)
         RecyclerView.adapter = myadapter
         EventChangeListener()
+        addimg.setOnClickListener {
+            val intent = Intent(this, additem::class.java)
+            startActivity(intent)
+        }
 
 
 
