@@ -50,7 +50,8 @@
             android:layout_height="wrap_content"
             android:text="Select a category"
             android:textAlignment="center"
-            android:textSize="25dp">
+            android:textSize="25dp"
+            android:id="@+id/headtxt">
 
         </TextView>
 
@@ -61,6 +62,7 @@
             android:text="Lost"
             android:textColor="@color/white"
             android:layout_marginLeft="90dp"
+            android:id="@+id/lostbtn"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             ></Button>
@@ -71,9 +73,13 @@
             android:text="Found"
             android:textStyle="bold"
             android:layout_marginLeft="90dp"
+            android:id="@+id/foundbtn"
             android:textColor="@color/white"
             android:layout_marginTop="10dp"
             ></Button>
+
+
+
 
     </LinearLayout>
 
