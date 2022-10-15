@@ -91,6 +91,18 @@ class MainActivity : AppCompatActivity() {
                 if(count==0){
                     userdb.add(users)
                     Toast.makeText(applicationContext, "You are now registered", Toast.LENGTH_SHORT).show()
+                    text1.isVisible = true
+                    text2.isVisible = true
+                    lbtn.isVisible = true
+                    ur.isVisible = false
+                    pr.isVisible = false
+                    re.isVisible = false
+                    rnum.isVisible = false
+                    rbtn.isVisible = false
+                    rtxt.setTextColor(Color.DKGRAY)
+                    rtxt.setTextSize(22f)
+                    ltxt.setTextColor(Color.WHITE)
+                    ltxt.setTextSize(30f)
                 }
 
             }
@@ -117,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 else{
 
-                                    Toast.makeText(applicationContext, "not found", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(applicationContext, "User not found", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }
