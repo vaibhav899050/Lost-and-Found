@@ -17,7 +17,7 @@ class adapter(private val itemlists : ArrayList<item>): RecyclerView.Adapter<ada
 
         val items : item = itemlists[position]
         holder.name.text = items.item
-        holder.desc.text = items.desc
+        holder.desc.text = items.location
         holder.date.text = items.date
         holder.status.text = items.status
     }
