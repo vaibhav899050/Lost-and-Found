@@ -47,6 +47,8 @@ class home : AppCompatActivity() {
         RecyclerView = findViewById(R.id.recview)
         RecyclerView.layoutManager = LinearLayoutManager(this)
         RecyclerView.setHasFixedSize(true)
+        val youitem = findViewById<TextView>(R.id.youritmtxt)
+        val allitem = findViewById<TextView>(R.id.allitemtxt)
 
 
 
@@ -58,6 +60,8 @@ class home : AppCompatActivity() {
             val intent = Intent(this, additem::class.java)
             startActivity(intent)
         }
+
+        
 
 
 
