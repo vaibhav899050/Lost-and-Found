@@ -40,6 +40,9 @@ class MainActivity : AppCompatActivity() {
         val re = findViewById<EditText>(R.id.re)
         val rnum = findViewById<EditText>(R.id.rnum)
         val rbtn = findViewById<Button>(R.id.rbtn)
+        val roll = findViewById<EditText>(R.id.roll)
+        val confirmpass = findViewById<EditText>(R.id.rpc)
+        val confirmtxt = findViewById<TextView>(R.id.confirmtxt)
         rtxt.setOnClickListener {
             text1.isVisible = false
             text2.isVisible = false
@@ -49,6 +52,8 @@ class MainActivity : AppCompatActivity() {
             re.isVisible = true
             rnum.isVisible = true
             rbtn.isVisible = true
+            confirmpass.isVisible = true
+            roll.isVisible = true
             ltxt.setTextColor(Color.DKGRAY)
             ltxt.setTextSize(22f)
             rtxt.setTextColor(Color.WHITE)
@@ -64,6 +69,8 @@ class MainActivity : AppCompatActivity() {
             re.isVisible = false
             rnum.isVisible = false
             rbtn.isVisible = false
+            confirmpass.isVisible = false
+            roll.isVisible = false
             rtxt.setTextColor(Color.DKGRAY)
             rtxt.setTextSize(22f)
             ltxt.setTextColor(Color.WHITE)
@@ -78,8 +85,10 @@ class MainActivity : AppCompatActivity() {
             //if(txt1.trim().isEmpty() || pr.text.toString().trim().isEmpty() || re.text.toString().trim().isEmpty() || rnum.text.toString().trim().isEmpty()){
               //  Toast.makeText(applicationContext, "Please fill the fields", Toast.LENGTH_SHORT).show()
             //}
-            if(ur.text.toString().trim().isNotEmpty() && pr.text.toString().trim().isNotEmpty() && re.text.toString().trim().isNotEmpty() && rnum.text.toString().trim().isNotEmpty()){
-                val users = hashMapOf("uesrname" to ur.text.toString(), "password" to pr.text.toString(), "email" to re.text.toString(), "phone" to rnum.text.toString())
+            if(ur.text.toString().trim().isNotEmpty() && pr.text.toString().trim().isNotEmpty() && re.text.toString().trim().isNotEmpty() && rnum.text.toString().trim().isNotEmpty()
+                && roll.text.toString().trim().isNotEmpty() && confirmpass.text.toString().trim().isNotEmpty()){
+                val users = hashMapOf("uesrname" to ur.text.toString(), "password" to pr.text.toString(), "email" to re.text.toString(), "phone" to rnum.text.toString(),
+                "rollnumber" to roll.text.toString())
 
 //                userdb.get().addOnCompleteListener {
 //                    if(it.isSuccessful){
@@ -102,37 +111,56 @@ class MainActivity : AppCompatActivity() {
 //
 //
 //                }
-                firebase.createUserWithEmailAndPassword(re.text.toString(), pr.text.toString())
-                    .addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
+                if(pr.text.toString() ==  confirmpass.text.toString()){
+                    if(re.text.toString().contains("@iitp.ac.in")){
+                        if(pr.text.toString().length>6){
+                            firebase.createUserWithEmailAndPassword(re.text.toString(), pr.text.toString())
+                                .addOnCompleteListener(this) { task ->
+                                    if (task.isSuccessful) {
 
-                            userdb.add(users)
-                            //Toast.makeText(applicationContext, "You are now registered", Toast.LENGTH_SHORT).show()
-                            text1.isVisible = true
-                            text2.isVisible = true
-                            lbtn.isVisible = true
-                            ur.isVisible = false
-                            pr.isVisible = false
-                            re.isVisible = false
-                            rnum.isVisible = false
-                            rbtn.isVisible = false
-                            rtxt.setTextColor(Color.DKGRAY)
-                            rtxt.setTextSize(22f)
-                            ltxt.setTextColor(Color.WHITE)
-                            ltxt.setTextSize(30f)
-                            // Sign in success, update UI with the signed-in user's information
+                                        userdb.add(users)
+                                        //Toast.makeText(applicationContext, "You are now registered", Toast.LENGTH_SHORT).show()
+                                        text1.isVisible = true
+                                        text2.isVisible = true
+                                        lbtn.isVisible = true
+                                        ur.isVisible = false
+                                        pr.isVisible = false
+                                        re.isVisible = false
+                                        rnum.isVisible = false
+                                        rbtn.isVisible = false
+                                        roll.isVisible = false
+                                        confirmpass.isVisible = false
+                                        confirmtxt.isVisible = true
+                                        rtxt.setTextColor(Color.DKGRAY)
+                                        rtxt.setTextSize(22f)
+                                        ltxt.setTextColor(Color.WHITE)
+                                        ltxt.setTextSize(30f)
+                                        // Sign in success, update UI with the signed-in user's information
 
-                            val user = firebase.currentUser
+                                        val user = firebase.currentUser
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            //val message = firebase.res
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        //val message = firebase.res
 
-                            Toast.makeText(baseContext, "Email is wrong or already in use",
-                                Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(baseContext, "This email is already in use",
+                                            Toast.LENGTH_SHORT).show()
 
+                                    }
+                                }
+                        }
+                        else{
+                            Toast.makeText(applicationContext, "Password is weak", Toast.LENGTH_SHORT).show()
                         }
                     }
+                    else{
+                        Toast.makeText(applicationContext, "Enter IITP email", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else{
+                    Toast.makeText(applicationContext, "Password mismatched", Toast.LENGTH_SHORT).show()
+                }
+
 
             }
             else{
