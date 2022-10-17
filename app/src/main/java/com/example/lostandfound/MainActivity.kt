@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -28,6 +29,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val db = Firebase.firestore
         firebase = Firebase.auth
+        val intent1 = intent
+        val emailLink = intent.data.toString()
+//        val actionCodeSettings = actionCodeSettings {
+//            // URL you want to redirect back to. The domain (www.example.com) for this
+//            // URL must be whitelisted in the Firebase Console.
+//            url = "https://stud.iitp.ac.in/"
+//            // This must be true
+//            handleCodeInApp = true
+//            setIOSBundleId("com.example.ios")
+//            setAndroidPackageName(
+//                "com.example.lostandfound",
+//                true, /* installIfNotAvailable */
+//                "12" /* minimumVersion */)
+//        }
+
+
 
 
         val text1 = findViewById<EditText>(R.id.ul)
@@ -43,6 +60,13 @@ class MainActivity : AppCompatActivity() {
         val roll = findViewById<EditText>(R.id.roll)
         val confirmpass = findViewById<EditText>(R.id.rpc)
         val confirmtxt = findViewById<TextView>(R.id.confirmtxt)
+
+        val currentUser = firebase.currentUser
+        if(currentUser != null){
+
+        }
+
+
         rtxt.setOnClickListener {
             text1.isVisible = false
             text2.isVisible = false
@@ -118,6 +142,10 @@ class MainActivity : AppCompatActivity() {
                                 .addOnCompleteListener(this) { task ->
                                     if (task.isSuccessful) {
 
+                                        firebase.currentUser?.sendEmailVerification()?.addOnSuccessListener {
+                                            confirmtxt.isVisible = true
+                                        }
+
                                         userdb.add(users)
                                         //Toast.makeText(applicationContext, "You are now registered", Toast.LENGTH_SHORT).show()
                                         text1.isVisible = true
@@ -130,7 +158,7 @@ class MainActivity : AppCompatActivity() {
                                         rbtn.isVisible = false
                                         roll.isVisible = false
                                         confirmpass.isVisible = false
-                                        confirmtxt.isVisible = true
+
                                         rtxt.setTextColor(Color.DKGRAY)
                                         rtxt.setTextSize(22f)
                                         ltxt.setTextColor(Color.WHITE)
@@ -138,6 +166,14 @@ class MainActivity : AppCompatActivity() {
                                         // Sign in success, update UI with the signed-in user's information
 
                                         val user = firebase.currentUser
+
+
+//                                        Firebase.auth.sendSignInLinkToEmail(re.text.toString(), actionCodeSettings)
+//                                            .addOnCompleteListener { task ->
+//                                                if (task.isSuccessful) {
+//                                                    confirmtxt.isVisible = true
+//                                                }
+//                                            }
 
                                     } else {
                                         // If sign in fails, display a message to the user.
@@ -173,24 +209,47 @@ class MainActivity : AppCompatActivity() {
 //                Toast.makeText(applicationContext, "Please fill the details", Toast.LENGTH_SHORT).show()
 //            }
             if(text1.text.toString().trim().isNotEmpty() && text2.text.toString().trim().isNotEmpty()) {
-                userdb.whereEqualTo("phone", text1.text.toString())
-                    .get()
-                    .addOnCompleteListener {
+//                userdb.whereEqualTo("phone", text1.text.toString())
+//                    .get()
+//                    .addOnCompleteListener {
+//
+//                        if(it.isSuccessful){
+//                            for (document in it.result){
+//                                if(text2.text.toString()==document.data.getValue("password")){
+//                                    val usern = document.data.getValue("uesrname")
+//                                    intent.putExtra("username", usern.toString())
+//                                    startActivity(intent)
+//                                }
+//                                else{
+//
+//                                    Toast.makeText(applicationContext, "User not found", Toast.LENGTH_SHORT).show()
+//                                }
+//                            }
+//                        }
+//
+//                    }
+                firebase.signInWithEmailAndPassword(text1.text.toString(), text2.text.toString())
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            val verification = firebase.currentUser?.isEmailVerified
+                            if(verification==true){
+                                val user = firebase.currentUser
 
-                        if(it.isSuccessful){
-                            for (document in it.result){
-                                if(text2.text.toString()==document.data.getValue("password")){
-                                    val usern = document.data.getValue("uesrname")
-                                    intent.putExtra("username", usern.toString())
-                                    startActivity(intent)
-                                }
-                                else{
-
-                                    Toast.makeText(applicationContext, "User not found", Toast.LENGTH_SHORT).show()
-                                }
                             }
-                        }
+                            else{
+                                Toast.makeText(applicationContext, "Account not verified", Toast.LENGTH_SHORT).show()
+                            }
+                            // Sign in success, update UI with the signed-in user's information
 
+
+                            //updateUI(user)
+                        } else {
+                            // If sign in fails, display a message to the user.
+
+                            Toast.makeText(baseContext, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show()
+                            //updateUI(null)
+                        }
                     }
 
             }
