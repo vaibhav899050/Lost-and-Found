@@ -14,6 +14,10 @@ import androidx.core.view.isVisible
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -23,11 +27,14 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
 
+
 class home : AppCompatActivity() {
     public lateinit var handler: Handler
     private lateinit var RecyclerView: RecyclerView
     private lateinit var myadapter: adapter
     private lateinit var itemarraylist: ArrayList<item>
+    private lateinit var database: DatabaseReference
+    private lateinit var firebase: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -35,10 +42,13 @@ class home : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         val usernametop = findViewById<TextView>(R.id.utxt)
+        database = Firebase.database.reference
+        firebase = Firebase.auth
+
 
         val intent = intent
-        val str = intent.getStringExtra("username")
-        usernametop.setText(str)
+
+
         val linear: LinearLayout = findViewById<LinearLayout>(R.id.l5)
         val addimg = findViewById<ImageView>(R.id.plus)
         val handler = Handler()
@@ -49,6 +59,13 @@ class home : AppCompatActivity() {
         RecyclerView.setHasFixedSize(true)
         val youitem = findViewById<TextView>(R.id.youritmtxt)
         val allitem = findViewById<TextView>(R.id.allitemtxt)
+
+        val userid = firebase.currentUser!!.uid
+
+        database.child("user").child(userid).get().addOnSuccessListener {
+            val name = it.child("name").value.toString()
+            usernametop.setText(name)
+        }
 
 
 
