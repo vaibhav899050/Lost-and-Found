@@ -70,7 +70,7 @@ class home : AppCompatActivity() {
 
 
         itemarraylist = arrayListOf()
-        myadapter = adapter(itemarraylist)
+        myadapter = adapter(itemarraylist, this)
         RecyclerView.adapter = myadapter
         EventChangeListener()
         addimg.setOnClickListener {
