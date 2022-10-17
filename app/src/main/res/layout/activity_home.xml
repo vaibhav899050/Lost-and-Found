@@ -98,11 +98,12 @@
         android:background="@drawable/bg6"
         >
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
             android:layout_height="wrap_content"
-            android:text="Your Items"
+            android:text="All Items"
             android:textSize="25dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="0dp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:id="@+id/youritmtxt"
@@ -118,7 +119,8 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:id="@+id/allitemtxt"
-            android:clickable="true">
+            android:clickable="true"
+            android:visibility="gone">
 
         </TextView>
 
