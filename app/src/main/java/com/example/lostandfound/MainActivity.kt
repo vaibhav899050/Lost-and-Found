@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         val addimgbtn = findViewById<Button>(R.id.addimgbtn)
         val nextbtn = findViewById<Button>(R.id.next)
 
-        val currentUser = firebase.currentUser
+        val currentUser = null
         if(currentUser != null){
             startActivity(intent)
 
