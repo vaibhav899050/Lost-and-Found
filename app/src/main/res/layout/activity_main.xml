@@ -61,7 +61,9 @@
                 android:text="Login"
                 android:textColor="@color/white"
                 android:textSize="30dp"
-                android:textStyle="bold"></TextView>
+                android:textStyle="bold">
+
+            </TextView>
 
             <TextView
                 android:id="@+id/rtxt"
@@ -75,7 +77,9 @@
 
                 android:textStyle="bold"
 
-                ></TextView>
+                >
+
+            </TextView>
 
 
         </LinearLayout>
@@ -83,7 +87,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@drawable/bg4"></LinearLayout>
+            android:background="@drawable/bg4">
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/ul"
@@ -95,7 +101,7 @@
             android:background="@drawable/bg1"
 
             android:enabled="true"
-            android:hint="Phone"
+            android:hint="IIT Patna email"
             android:inputType="number"
             android:padding="10dp"
             >
@@ -129,7 +135,9 @@
             android:text="Login"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            ></Button>
+            >
+
+        </Button>
 
         <TextView
             android:layout_width="wrap_content"
@@ -140,10 +148,12 @@
             android:textStyle="bold"
             android:id="@+id/confirmtxt"
             android:visibility="gone"
-            ></TextView>
+            >
+
+        </TextView>
 
 
-        //register
+
 
         <EditText
             android:id="@+id/ur"
@@ -240,7 +250,9 @@
 
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:visibility="gone"></Button>
+            android:visibility="gone">
+
+        </Button>
 
 
     </LinearLayout>
@@ -253,7 +265,9 @@
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/l1"
-        android:layout_marginTop="100dp"></TextView>
+        android:layout_marginTop="100dp">
+
+    </TextView>
 
 
 
