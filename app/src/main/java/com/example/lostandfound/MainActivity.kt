@@ -4,24 +4,37 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.icu.text.RelativeDateTimeFormatter
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.app
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+import io.grpc.Context
+
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var firebase: FirebaseAuth
     private lateinit var reason: FirebaseAuthException
+    private lateinit var storage: FirebaseStorage
+    private lateinit var uri: Uri
+    private lateinit var database: DatabaseReference
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -30,7 +43,14 @@ class MainActivity : AppCompatActivity() {
         val db = Firebase.firestore
         firebase = Firebase.auth
         val intent1 = intent
+        val intent = Intent(this, home::class.java)
+
         val emailLink = intent.data.toString()
+        storage = Firebase.storage
+        val storageref = storage.reference
+        database = Firebase.database.reference
+
+
 //        val actionCodeSettings = actionCodeSettings {
 //            // URL you want to redirect back to. The domain (www.example.com) for this
 //            // URL must be whitelisted in the Firebase Console.
@@ -60,14 +80,28 @@ class MainActivity : AppCompatActivity() {
         val roll = findViewById<EditText>(R.id.roll)
         val confirmpass = findViewById<EditText>(R.id.rpc)
         val confirmtxt = findViewById<TextView>(R.id.confirmtxt)
+        val profileimg = findViewById<ImageView>(R.id.profileimg)
+        val addimgbtn = findViewById<Button>(R.id.addimgbtn)
+        val nextbtn = findViewById<Button>(R.id.next)
 
         val currentUser = firebase.currentUser
         if(currentUser != null){
+            startActivity(intent)
 
         }
+        val gallery = registerForActivityResult(ActivityResultContracts.GetContent(),
+        ActivityResultCallback {
+            profileimg.setImageURI(it)
+            nextbtn.isVisible = true
+            uri = it
 
+        })
 
-        rtxt.setOnClickListener {
+        addimgbtn.setOnClickListener {
+            gallery.launch("image/*")
+        }
+
+        nextbtn.setOnClickListener {
             text1.isVisible = false
             text2.isVisible = false
             lbtn.isVisible = false
@@ -82,6 +116,32 @@ class MainActivity : AppCompatActivity() {
             ltxt.setTextSize(22f)
             rtxt.setTextColor(Color.WHITE)
             rtxt.setTextSize(30f)
+            profileimg.isVisible = false
+            addimgbtn.isVisible = false
+            nextbtn.isVisible = false
+        }
+
+
+
+
+        rtxt.setOnClickListener {
+            text1.isVisible = false
+            text2.isVisible = false
+            lbtn.isVisible = false
+//            ur.isVisible = true
+//            pr.isVisible = true
+//            re.isVisible = true
+//            rnum.isVisible = true
+//            rbtn.isVisible = true
+//            confirmpass.isVisible = true
+//            roll.isVisible = true
+            ltxt.setTextColor(Color.DKGRAY)
+            ltxt.setTextSize(22f)
+            rtxt.setTextColor(Color.WHITE)
+            rtxt.setTextSize(30f)
+            profileimg.isVisible = true
+            addimgbtn.isVisible = true
+            confirmtxt.isVisible = false
 
         }
         ltxt.setOnClickListener {
@@ -99,11 +159,15 @@ class MainActivity : AppCompatActivity() {
             rtxt.setTextSize(22f)
             ltxt.setTextColor(Color.WHITE)
             ltxt.setTextSize(30f)
+            profileimg.isVisible = false
+            addimgbtn.isVisible = false
+            nextbtn.isVisible = false
         }
         val txt1 = ur.text.toString()
         val userdb = db.collection("users")
-        val intent = Intent(this, home::class.java)
+
         var count  = 0
+        var downloadurl = ""
 
         rbtn.setOnClickListener {
             //if(txt1.trim().isEmpty() || pr.text.toString().trim().isEmpty() || re.text.toString().trim().isEmpty() || rnum.text.toString().trim().isEmpty()){
@@ -138,34 +202,45 @@ class MainActivity : AppCompatActivity() {
                 if(pr.text.toString() ==  confirmpass.text.toString()){
                     if(re.text.toString().contains("@iitp.ac.in")){
                         if(pr.text.toString().length>6){
-                            firebase.createUserWithEmailAndPassword(re.text.toString(), pr.text.toString())
-                                .addOnCompleteListener(this) { task ->
-                                    if (task.isSuccessful) {
 
-                                        firebase.currentUser?.sendEmailVerification()?.addOnSuccessListener {
-                                            confirmtxt.isVisible = true
-                                        }
+                            storageref.child(System.currentTimeMillis().toString()).putFile(uri).addOnSuccessListener {
+                                task->
+                                task.metadata!!.reference!!.downloadUrl
+                                    .addOnSuccessListener {
+                                        downloadurl = it.toString()
+                                        firebase.createUserWithEmailAndPassword(re.text.toString(), pr.text.toString())
+                                            .addOnCompleteListener(this) { task ->
+                                                if (task.isSuccessful) {
 
-                                        userdb.add(users)
-                                        //Toast.makeText(applicationContext, "You are now registered", Toast.LENGTH_SHORT).show()
-                                        text1.isVisible = true
-                                        text2.isVisible = true
-                                        lbtn.isVisible = true
-                                        ur.isVisible = false
-                                        pr.isVisible = false
-                                        re.isVisible = false
-                                        rnum.isVisible = false
-                                        rbtn.isVisible = false
-                                        roll.isVisible = false
-                                        confirmpass.isVisible = false
+                                                    firebase.currentUser?.sendEmailVerification()?.addOnSuccessListener {
+                                                        confirmtxt.isVisible = true
+                                                    }
 
-                                        rtxt.setTextColor(Color.DKGRAY)
-                                        rtxt.setTextSize(22f)
-                                        ltxt.setTextColor(Color.WHITE)
-                                        ltxt.setTextSize(30f)
-                                        // Sign in success, update UI with the signed-in user's information
+                                                    userdb.add(users)
 
-                                        val user = firebase.currentUser
+                                                    val userid = firebase.currentUser!!.uid
+
+                                                    val usersss = usermodel(ur.text.toString(), re.text.toString(), pr.text.toString(), roll.text.toString(), downloadurl, rnum.text.toString())
+                                                    database.child("user").child(userid).setValue(usersss)
+                                                    //Toast.makeText(applicationContext, "You are now registered", Toast.LENGTH_SHORT).show()
+                                                    text1.isVisible = true
+                                                    text2.isVisible = true
+                                                    lbtn.isVisible = true
+                                                    ur.isVisible = false
+                                                    pr.isVisible = false
+                                                    re.isVisible = false
+                                                    rnum.isVisible = false
+                                                    rbtn.isVisible = false
+                                                    roll.isVisible = false
+                                                    confirmpass.isVisible = false
+
+                                                    rtxt.setTextColor(Color.DKGRAY)
+                                                    rtxt.setTextSize(22f)
+                                                    ltxt.setTextColor(Color.WHITE)
+                                                    ltxt.setTextSize(30f)
+                                                    // Sign in success, update UI with the signed-in user's information
+
+                                                    val user = firebase.currentUser
 
 
 //                                        Firebase.auth.sendSignInLinkToEmail(re.text.toString(), actionCodeSettings)
@@ -175,15 +250,20 @@ class MainActivity : AppCompatActivity() {
 //                                                }
 //                                            }
 
-                                    } else {
-                                        // If sign in fails, display a message to the user.
-                                        //val message = firebase.res
+                                                } else {
+                                                    // If sign in fails, display a message to the user.
+                                                    //val message = firebase.res
 
-                                        Toast.makeText(baseContext, "This email is already in use",
-                                            Toast.LENGTH_SHORT).show()
+                                                    Toast.makeText(baseContext, "This email is already in use",
+                                                        Toast.LENGTH_SHORT).show()
+
+                                                }
+                                            }
 
                                     }
-                                }
+                            }
+
+
                         }
                         else{
                             Toast.makeText(applicationContext, "Password is weak", Toast.LENGTH_SHORT).show()
@@ -234,6 +314,7 @@ class MainActivity : AppCompatActivity() {
                             val verification = firebase.currentUser?.isEmailVerified
                             if(verification==true){
                                 val user = firebase.currentUser
+                                startActivity(intent)
 
                             }
                             else{
