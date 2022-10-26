@@ -78,11 +78,13 @@ class additem : AppCompatActivity() {
             forml.isVisible = false
             imagel.isVisible = true
         }
+        val load = findViewById<TextView>(R.id.load)
 
 
 
         aditmbtn.setOnClickListener {
             if(location.text.toString().isNotEmpty() && date.text.toString().isNotEmpty() && title.text.toString().isNotEmpty() && desc.text.toString().isNotEmpty() && roll.text.toString().isNotEmpty()){
+                load.isVisible = true
                 //val item = hashMapOf("item" to title.text.toString(), "desc" to desc.text.toString(), "roll" to roll.text.toString(), "location" to location.text.toString(), "status" to status.toString(), "date" to date.text.toString())
                 //itemdb.add(item)
 
