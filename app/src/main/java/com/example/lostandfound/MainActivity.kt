@@ -2,29 +2,23 @@ package com.example.lostandfound
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Paint
-import android.icu.text.RelativeDateTimeFormatter
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.app
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
-import io.grpc.Context
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -120,11 +115,13 @@ class MainActivity : AppCompatActivity() {
             addimgbtn.isVisible = false
             nextbtn.isVisible = false
         }
+        val load1 = findViewById<TextView>(R.id.load1)
 
 
 
 
         rtxt.setOnClickListener {
+            load1.isVisible = false
             text1.isVisible = false
             text2.isVisible = false
             lbtn.isVisible = false
@@ -145,6 +142,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         ltxt.setOnClickListener {
+            load1.isVisible = false
             text1.isVisible = true
             text2.isVisible = true
             lbtn.isVisible = true
@@ -166,6 +164,7 @@ class MainActivity : AppCompatActivity() {
         val txt1 = ur.text.toString()
         val userdb = db.collection("users")
 
+
         var count  = 0
         var downloadurl = ""
 
@@ -175,6 +174,7 @@ class MainActivity : AppCompatActivity() {
             //}
             if(ur.text.toString().trim().isNotEmpty() && pr.text.toString().trim().isNotEmpty() && re.text.toString().trim().isNotEmpty() && rnum.text.toString().trim().isNotEmpty()
                 && roll.text.toString().trim().isNotEmpty() && confirmpass.text.toString().trim().isNotEmpty()){
+
                 val users = hashMapOf("uesrname" to ur.text.toString(), "password" to pr.text.toString(), "email" to re.text.toString(), "phone" to rnum.text.toString(),
                 "rollnumber" to roll.text.toString())
 
@@ -202,6 +202,7 @@ class MainActivity : AppCompatActivity() {
                 if(pr.text.toString() ==  confirmpass.text.toString()){
                     if(re.text.toString().contains("@iitp.ac.in")){
                         if(pr.text.toString().length>6){
+                            load1.isVisible = true
 
                             storageref.child(System.currentTimeMillis().toString()).putFile(uri).addOnSuccessListener {
                                 task->
@@ -224,6 +225,7 @@ class MainActivity : AppCompatActivity() {
                                                     database.child("user").child(userid).setValue(usersss)
                                                     //Toast.makeText(applicationContext, "You are now registered", Toast.LENGTH_SHORT).show()
                                                     text1.isVisible = true
+                                                    load1.isVisible = false
                                                     text2.isVisible = true
                                                     lbtn.isVisible = true
                                                     ur.isVisible = false
